@@ -15,4 +15,4 @@ If you are developing a production application, we recommend using TypeScript wi
 1- crear app en firebase 
 2- agregar la configuracion lista
 3- instalar modulo de firebase en vite
-4- authenticar  
+4- authenticar   
