@@ -5,7 +5,7 @@ const Navbar = () => {
         <div class="menu-toggle" onclick="toggleMenu()">
           ☰
         </div>
-        <a href="#" className="font-bold">
+        <a href="#" style={{ color: "inherit", textDecoration: "none" }} className="font-bold text-2xl no-underline text-inherit">
           NotiChaco
         </a>
         <div className="mx-2" id="navLinks">
@@ -16,7 +16,7 @@ const Navbar = () => {
         </div>
       </nav>
       <div className="flex items-center justify-center">
-        <ul className="flex m-auto space-x-3 font-bold">
+        <ul className="flex m-auto space-x-3 font-bold shadow-2xl">
           <li>Inicio</li>
           <li>Lo ultimo</li>
           <li>Deportes</li>

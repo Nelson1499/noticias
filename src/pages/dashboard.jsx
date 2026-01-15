@@ -3,6 +3,7 @@ import Dashboardvisual from '../components/dashboard/Dashboard'
 import Footer from '../components/layout/Footer'
 
 const Dashboard = () => {
+  
   return (
     <div>
       <Navbar />

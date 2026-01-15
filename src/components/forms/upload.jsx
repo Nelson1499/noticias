@@ -1,12 +1,13 @@
-
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import Preview from "../elementos/preview"
+import Preview from "../elementos/preview";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
+import { AddNews } from "../../api/api_news";
+import { subirImagen } from "../../api/uploadimages";
 
 const UploadForm = () => {
   /**
@@ -25,7 +26,7 @@ const UploadForm = () => {
       second: "",
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Title is required"),
+      // title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
       category: Yup.string().required("Category is required"),
       content: Yup.string()
@@ -68,13 +69,16 @@ const UploadForm = () => {
           return ["image/png", "image/jpeg"].includes(value.type);
         }),
     }),
-    onSubmit: () => {
-      console.log(formik.values);
-
-      toast.success("Successfully created!");
-      setTimeout(() => {
-        setTimout(false);
-      }, 10000);
+    onSubmit: async () => {
+      let data = await subirImagen(formik.values);
+      if (data) {
+        AddNews(data)
+          .then(() => toast.success("Successfully created!"))
+          .catch((e) => console.log(e));
+        setTimeout(() => {
+          setTimout(false);
+        }, 1000);
+      }
     },
   });
   const onChange = (content) => {
@@ -157,7 +161,11 @@ const UploadForm = () => {
             )}
           </div>
           <div>
-            <ReactQuill value={formik.values.content} onChange={onChange} className="h-56" />
+            <ReactQuill
+              value={formik.values.content}
+              onChange={onChange}
+              className="h-56"
+            />
             {formik.touched.content && formik.errors.content && (
               <small className="text-red-500">{formik.errors.content}</small>
             )}
@@ -176,6 +184,9 @@ const UploadForm = () => {
               accept="image/*"
               hidden
             />
+            {formik.touched.cover && formik.errors.cover && (
+              <small className="text-red-500">{formik.errors.cover}</small>
+            )}
           </label>
           <label className="w-max cursor-pointer">
             <h6>Principal Imagen</h6>
@@ -206,16 +217,14 @@ const UploadForm = () => {
         </div>
         <button
           type="submit"
-          className={`mb-auto bg-green-600 p-2 text-amber-50 rounded ${
-            Timout && "pointer-events-none"
-          }`}
+          className={`mb-auto bg-green-600 p-2 text-amber-50 rounded `}
           onClick={() => setTimout(!Timout)}
         >
           {Timout ? "Uploading..." : "Upload"}
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default UploadForm
+export default UploadForm;
